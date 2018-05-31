@@ -1,4 +1,4 @@
-use std::ops::{Add, Sub};
+use std::ops::{Add, Div, Mul, Sub};
 use std::fmt;
 
 fn main() {
@@ -58,6 +58,17 @@ impl Add for Rational {
     fn add(self, other: Rational) -> Rational {
         Rational {
             n: self.n * other.d + other.n * self.d,
+            d: self.d * other.d,
+        }
+    }
+}
+
+impl Sub for Rational {
+    type Output = Rational;
+
+    fn sub(self, other: Rational) -> Rational {
+        Rational {
+            n: self.n * other.d - other.n * self.d,
             d: self.d * other.d,
         }
     }
