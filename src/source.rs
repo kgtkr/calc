@@ -6,7 +6,7 @@ pub struct Source {
 }
 
 impl Source {
-  fn new(s: String) -> Source {
+  pub fn new(s: String) -> Source {
     Source {
       s: s.chars().collect(),
       pos: 0,

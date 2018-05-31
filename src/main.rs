@@ -1,8 +1,12 @@
 mod rational;
 use rational::Rational;
-mod calc;
 mod source;
 
 fn main() {
-    println!("Hello, world!");
+    println!(
+        "{}",
+        source::Source::new(std::env::args().nth(1).unwrap())
+            .expr()
+            .unwrap()
+    );
 }
