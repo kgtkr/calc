@@ -4,10 +4,10 @@ pub struct Source {
 }
 
 impl Source {
-  fn new(s: String, pos: usize) -> Source {
+  fn new(s: String) -> Source {
     Source {
       s: s.chars().collect(),
-      pos: pos,
+      pos: 0,
     }
   }
 
