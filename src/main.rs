@@ -73,3 +73,14 @@ impl Sub for Rational {
         }
     }
 }
+
+impl Mul for Rational {
+    type Output = Rational;
+
+    fn sub(self, other: Rational) -> Rational {
+        Rational {
+            n: self.n * other.n,
+            d: self.d * other.d,
+        }
+    }
+}
