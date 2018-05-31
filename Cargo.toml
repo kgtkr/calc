@@ -1,0 +1,6 @@
+[package]
+name = "rust-calc"
+version = "0.1.0"
+authors = ["tkr <kgtkr.jp@gmail.com>"]
+
+[dependencies]
