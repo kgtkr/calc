@@ -5,6 +5,14 @@ fn main() {
     println!("Hello, world!");
 }
 
+fn gcd(a: i64, b: i64) -> i64 {
+    if b == 0 {
+        a
+    } else {
+        gcd(b, a % b)
+    }
+}
+
 #[derive(Debug)]
 enum CalcError {
     Zero,
@@ -38,6 +46,17 @@ impl fmt::Display for Rational {
             write!(f, "{}", self.n)
         } else {
             write!(f, "{}/{}", self.n, self.d)
+        }
+    }
+}
+
+impl Add for Rational {
+    type Output = Rational;
+
+    fn add(self, other: Rational) -> Rational {
+        Rational {
+            x: self.x + other.x,
+            y: self.y + other.y,
         }
     }
 }
