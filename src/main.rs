@@ -84,3 +84,14 @@ impl Mul for Rational {
         }
     }
 }
+
+impl Div for Rational {
+    type Output = Rational;
+
+    fn div(self, other: Rational) -> Rational {
+        Rational {
+            n: self.n * other.d,
+            d: self.d * other.n,
+        }
+    }
+}
