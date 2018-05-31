@@ -15,7 +15,9 @@ impl Source {
     self.s.get(self.pos).cloned()
   }
 
-  fn next(&mut self) {
+  fn next(&mut self) -> Option<char> {
+    let val = self.peek();
     self.pos += 1;
+    val
   }
 }
