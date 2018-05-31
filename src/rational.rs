@@ -9,6 +9,7 @@ fn gcd(a: i64, b: i64) -> i64 {
   }
 }
 
+#[derive(Clone, Copy)]
 pub enum Rational {
   Value { n: i64, d: i64 },
   NaN,
