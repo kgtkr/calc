@@ -34,11 +34,15 @@ impl From<i64> for Rational {
 
 impl fmt::Display for Rational {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    if let &Rational::Value(ref value) = self {
-      if value.d == 1 {
-        write!(f, "{}", value.n)
+    if let &Rational::Value {
+      n: self_n,
+      d: self_d,
+    } = self
+    {
+      if self_d == 1 {
+        write!(f, "{}", self_n)
       } else {
-        write!(f, "{}/{}", value.n, value.d)
+        write!(f, "{}/{}", self_n, self_d)
       }
     } else {
       write!(f, "NaN")
@@ -50,11 +54,27 @@ impl Add for Rational {
   type Output = Rational;
 
   fn add(self, other: Rational) -> Rational {
-    if let (Rational::Value(value), Rational::Value(other)) = (self, other) {
-      Rational::new(value.n * other.d + other.n * value.d, value.d * other.d)
+    if let (
+      Rational::Value {
+        n: self_n,
+        d: self_d,
+      },
+      Rational::Value {
+        n: other_n,
+        d: other_d,
+      },
+    ) = (self, other)
+    {
+      Rational::new(self_n * other_d + other_n * self_d, self_d * other_d)
     } else {
       Rational::NaN
     }
+  }
+}
+
+impl AddAssign for Rational {
+  fn add_assign(&mut self, other: Rational) {
+    *self = *self + other;
   }
 }
 
@@ -62,11 +82,27 @@ impl Sub for Rational {
   type Output = Rational;
 
   fn sub(self, other: Rational) -> Rational {
-    if let (Rational::Value(value), Rational::Value(other)) = (self, other) {
-      Rational::new(value.n * other.d - other.n * value.d, value.d * other.d)
+    if let (
+      Rational::Value {
+        n: self_n,
+        d: self_d,
+      },
+      Rational::Value {
+        n: other_n,
+        d: other_d,
+      },
+    ) = (self, other)
+    {
+      Rational::new(self_n * other_d - other_n * self_d, self_d * other_d)
     } else {
       Rational::NaN
     }
+  }
+}
+
+impl SubAssign for Rational {
+  fn sub_assign(&mut self, other: Rational) {
+    *self = *self - other;
   }
 }
 
@@ -74,11 +110,27 @@ impl Mul for Rational {
   type Output = Rational;
 
   fn mul(self, other: Rational) -> Rational {
-    if let (Rational::Value(value), Rational::Value(other)) = (self, other) {
-      Rational::new(value.n * other.n, value.d * other.d)
+    if let (
+      Rational::Value {
+        n: self_n,
+        d: self_d,
+      },
+      Rational::Value {
+        n: other_n,
+        d: other_d,
+      },
+    ) = (self, other)
+    {
+      Rational::new(self_n * other_n, self_d * other_d)
     } else {
       Rational::NaN
     }
+  }
+}
+
+impl MulAssign for Rational {
+  fn mul_assign(&mut self, other: Rational) {
+    *self = *self * other;
   }
 }
 
@@ -86,10 +138,26 @@ impl Div for Rational {
   type Output = Rational;
 
   fn div(self, other: Rational) -> Rational {
-    if let (Rational::Value(value), Rational::Value(other)) = (self, other) {
-      Rational::new(value.n * other.d, value.d * other.n)
+    if let (
+      Rational::Value {
+        n: self_n,
+        d: self_d,
+      },
+      Rational::Value {
+        n: other_n,
+        d: other_d,
+      },
+    ) = (self, other)
+    {
+      Rational::new(self_n * other_d, self_d * other_n)
     } else {
       Rational::NaN
     }
+  }
+}
+
+impl DivAssign for Rational {
+  fn div_assign(&mut self, other: Rational) {
+    *self = *self / other;
   }
 }
