@@ -30,6 +30,7 @@ impl Rational {
             Err(CalcError::Zero)
         } else {
             let g = gcd(n.abs(), d.abs());
+            let g = if d < 0 { -g } else { g };
             Ok(Rational { n: n / g, d: d / g })
         }
     }
@@ -47,6 +48,17 @@ impl fmt::Display for Rational {
             write!(f, "{}", self.n)
         } else {
             write!(f, "{}/{}", self.n, self.d)
+        }
+    }
+}
+
+impl Add for Rational {
+    type Output = Rational;
+
+    fn add(self, other: Rational) -> Rational {
+        Rational {
+            x: self.x + other.x,
+            y: self.y + other.y,
         }
     }
 }
