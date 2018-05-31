@@ -57,8 +57,8 @@ impl Add for Rational {
 
     fn add(self, other: Rational) -> Rational {
         Rational {
-            x: self.x + other.x,
-            y: self.y + other.y,
+            n: self.n * other.d + other.n * self.d,
+            d: self.d * other.d,
         }
     }
 }
