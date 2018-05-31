@@ -20,4 +20,23 @@ impl Source {
     self.pos += 1;
     val
   }
+
+  fn num(&mut self) -> Option<i64> {
+    let mut s = String::new();
+    if self.peek() == Some('-') {
+      self.next();
+      s.push('-');
+    }
+
+    while let Some(c) = self.peek() {
+      if c.is_digit(10) {
+        s.push(c);
+        self.next();
+      } else {
+        break;
+      }
+    }
+
+    s.parse().ok()
+  }
 }
