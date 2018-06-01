@@ -29,7 +29,7 @@ impl Source {
 
   pub fn expect<F>(&mut self, f: F) -> Option<char>
   where
-    F: Fn(char) -> bool,
+    F: FnOnce(char) -> bool,
   {
     match self.peek() {
       Some(x) if f(x) => {
