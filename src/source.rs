@@ -23,20 +23,31 @@ impl Source {
     val
   }
 
+  pub fn char(&mut self, c: char) -> Option<char> {
+    self.expect(|x| x == c)
+  }
+
+  pub fn expect<F>(&mut self, f: F) -> Option<char>
+  where
+    F: Fn(char) -> bool,
+  {
+    match self.peek() {
+      Some(x) if f(x) => {
+        self.next();
+        Some(x)
+      }
+      _ => None,
+    }
+  }
+
   pub fn number(&mut self) -> Option<Rational> {
     let mut s = String::new();
-    if self.peek() == Some('-') {
-      self.next();
+    if let Some(_) = self.char('-') {
       s.push('-');
     }
 
-    while let Some(c) = self.peek() {
-      if c.is_digit(10) {
-        s.push(c);
-        self.next();
-      } else {
-        break;
-      }
+    while let Some(c) = self.expect(|c| c.is_digit(10)) {
+      s.push(c);
     }
 
     s.parse::<i64>().ok().map(Rational::from)
@@ -44,18 +55,16 @@ impl Source {
 
   pub fn expr(&mut self) -> Option<Rational> {
     let mut x = self.term()?;
-    while let Some(c) = self.peek() {
+    while let Some(c) = self.expect(|c| c == '+' || c == '-') {
       match c {
         '+' => {
-          self.next();
           x += self.term()?;
         }
         '-' => {
-          self.next();
           x -= self.term()?;
         }
         _ => {
-          break;
+          unreachable!();
         }
       }
     }
@@ -64,18 +73,16 @@ impl Source {
 
   pub fn term(&mut self) -> Option<Rational> {
     let mut x = self.factor()?;
-    while let Some(c) = self.peek() {
+    while let Some(c) = self.expect(|c| c == '*' || c == '/') {
       match c {
         '*' => {
-          self.next();
           x *= self.factor()?;
         }
         '/' => {
-          self.next();
           x /= self.factor()?;
         }
         _ => {
-          break;
+          unreachable!();
         }
       }
     }
@@ -83,12 +90,9 @@ impl Source {
   }
 
   pub fn factor(&mut self) -> Option<Rational> {
-    if self.peek() == Some('(') {
-      self.next();
+    if let Some(_) = self.char('(') {
       let ret = self.expr();
-      if self.peek() == Some(')') {
-        self.next();
-      }
+      self.char(')')?;
       ret
     } else {
       self.number()

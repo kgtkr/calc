@@ -1,5 +1,4 @@
 mod rational;
-use rational::Rational;
 mod source;
 
 fn main() {
