@@ -53,6 +53,14 @@ impl Source {
     s.parse::<i64>().ok().map(Rational::from)
   }
 
+  pub fn eof(&self) -> Option<()> {
+    if self.s.len() == self.pos {
+      Some(())
+    } else {
+      None
+    }
+  }
+
   pub fn expr(&mut self) -> Option<Rational> {
     let mut x = self.term()?;
     while let Some(c) = self.expect(|c| c == '+' || c == '-') {
@@ -68,6 +76,7 @@ impl Source {
         }
       }
     }
+    self.eof()?;
     Some(x)
   }
 
