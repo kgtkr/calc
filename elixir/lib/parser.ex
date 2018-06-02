@@ -20,6 +20,6 @@ defmodule Parser do
     end
   end
 
-  def eof("")->{:ok,{(),""}}
-  def eof(_)->{:error,nil}
+  def eof(""),do: {:ok,{nil,""}}
+  def eof(_),do: {:error,nil}
 end
