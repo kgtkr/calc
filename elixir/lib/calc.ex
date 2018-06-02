@@ -7,7 +7,7 @@ defmodule Calc do
         nil->{:error,nil}
         x->{:ok,x}
       end
-      {x,_}<-s|>Parser.expr
+      x<-Parser.parse s
       x|>Rational.to_string|>IO.puts
     after
       nil

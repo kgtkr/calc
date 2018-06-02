@@ -48,10 +48,14 @@ defmodule Parser do
     end
   end
   def expr(s,n) do
+    {:ok,{n,s}}
+  end
+  def parse(s) do
     OK.for do
-      {_,s}=eof(s)
+      {x,s}<-expr(s)
+      _<-eof(s)
     after
-      {n,s}
+      x
     end
   end
   def term(s) do
