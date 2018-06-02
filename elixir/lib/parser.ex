@@ -22,4 +22,8 @@ defmodule Parser do
 
   def eof(""),do: {:ok,{nil,""}}
   def eof(_),do: {:error,nil}
+
+  def expr(_),do: nil
+  def term(_),do: nil
+  def factor(_),do: nil
 end
