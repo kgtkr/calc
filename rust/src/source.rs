@@ -13,21 +13,21 @@ impl Source {
     }
   }
 
-  pub fn peek(&self) -> Option<char> {
+  fn peek(&self) -> Option<char> {
     self.s.get(self.pos).cloned()
   }
 
-  pub fn next(&mut self) -> Option<char> {
+  fn next(&mut self) -> Option<char> {
     let val = self.peek();
     self.pos += 1;
     val
   }
 
-  pub fn char(&mut self, c: char) -> Option<char> {
+  fn char(&mut self, c: char) -> Option<char> {
     self.expect(|x| x == c)
   }
 
-  pub fn expect<F>(&mut self, f: F) -> Option<char>
+  fn expect<F>(&mut self, f: F) -> Option<char>
   where
     F: FnOnce(char) -> bool,
   {
@@ -40,7 +40,7 @@ impl Source {
     }
   }
 
-  pub fn number(&mut self) -> Option<Rational> {
+  fn number(&mut self) -> Option<Rational> {
     let mut s = String::new();
     if let Some(_) = self.char('-') {
       s.push('-');
@@ -53,7 +53,7 @@ impl Source {
     s.parse::<i64>().ok().map(Rational::from)
   }
 
-  pub fn eof(&self) -> Option<()> {
+  fn eof(&self) -> Option<()> {
     if self.s.len() == self.pos {
       Some(())
     } else {
@@ -67,7 +67,7 @@ impl Source {
     Some(x)
   }
 
-  pub fn expr(&mut self) -> Option<Rational> {
+  fn expr(&mut self) -> Option<Rational> {
     let mut x = self.term()?;
     while let Some(c) = self.expect(|c| c == '+' || c == '-') {
       match c {
@@ -85,7 +85,7 @@ impl Source {
     Some(x)
   }
 
-  pub fn term(&mut self) -> Option<Rational> {
+  fn term(&mut self) -> Option<Rational> {
     let mut x = self.factor()?;
     while let Some(c) = self.expect(|c| c == '*' || c == '/') {
       match c {
@@ -103,7 +103,7 @@ impl Source {
     Some(x)
   }
 
-  pub fn factor(&mut self) -> Option<Rational> {
+  fn factor(&mut self) -> Option<Rational> {
     if let Some(_) = self.char('(') {
       let ret = self.expr();
       self.char(')')?;
