@@ -82,9 +82,9 @@ defmodule Parser do
   def factor("("<>s) do
     OK.for do
       {x,s}<-expr(s)
-      char(s,")")
+      {_,s}<-char(s,")")
     after
-      x
+      {x,s}
     end
   end
   def factor(s),do: number(s)
