@@ -2,7 +2,7 @@ require OK
 
 # {:error,nil}|{:ok,{T,str}}
 defmodule Parser do
-  def expect(<<x::bytes-size(1)>><>xs,f) do
+  defp expect(<<x::bytes-size(1)>><>xs,f) do
     if f.(x) do
       {:ok,{x,xs}}
     else
@@ -10,20 +10,20 @@ defmodule Parser do
     end
   end
 
-  def char(s,c),do: expect(s,fn x -> x==c end)
+  defp char(s,c),do: expect(s,fn x -> x==c end)
 
-  def number("+"<>_),do: {:error,nil}
-  def number(s) do
+  defp number("+"<>_),do: {:error,nil}
+  defp number(s) do
     case Integer.parse(s) do
       :error -> {:error, nil}
       {x,s} -> {:ok, {Rational.from_int(x),s}}
     end
   end
 
-  def eof(""),do: {:ok,{nil,""}}
-  def eof(_),do: {:error,nil}
+  defp eof(""),do: {:ok,{nil,""}}
+  defp eof(_),do: {:error,nil}
 
-  def expr(s) do
+  defp expr(s) do
     OK.for do
       {x,s}<-term(s)
       res<-expr(s,x)
@@ -31,7 +31,7 @@ defmodule Parser do
       res
     end
   end
-  def expr("+"<>s,n) do
+  defp expr("+"<>s,n) do
     OK.for do
       {x,s}<-term(s)
       res<-expr(s,Rational.add(n,x))
@@ -39,7 +39,7 @@ defmodule Parser do
       res
     end
   end
-  def expr("-"<>s,n) do
+  defp expr("-"<>s,n) do
     OK.for do
       {x,s}<-term(s)
       res<-expr(s,Rational.sub(n,x))
@@ -47,7 +47,7 @@ defmodule Parser do
       res
     end
   end
-  def expr(s,n) do
+  defp expr(s,n) do
     {:ok,{n,s}}
   end
   def parse(s) do
@@ -58,7 +58,7 @@ defmodule Parser do
       x
     end
   end
-  def term(s) do
+  defp term(s) do
     OK.for do
       {x,s}<-factor(s)
       res<-term(s,x)
@@ -66,7 +66,7 @@ defmodule Parser do
       res
     end
   end
-  def term("*"<>s,n) do
+  defp term("*"<>s,n) do
     OK.for do
       {x,s}<-factor(s)
       res<-term(s,Rational.mul(n,x))
@@ -74,7 +74,7 @@ defmodule Parser do
       res
     end
   end
-  def term("/"<>s,n) do
+  defp term("/"<>s,n) do
     OK.for do
       {x,s}<-factor(s)
       res<-term(s,Rational.div(n,x))
@@ -82,8 +82,8 @@ defmodule Parser do
       res
     end
   end
-  def term(s,n),do: {:ok,{n,s}}
-  def factor("("<>s) do
+  defp term(s,n),do: {:ok,{n,s}}
+  defp factor("("<>s) do
     OK.for do
       {x,s}<-expr(s)
       {_,s}<-char(s,")")
@@ -91,5 +91,5 @@ defmodule Parser do
       {x,s}
     end
   end
-  def factor(s),do: number(s)
+  defp factor(s),do: number(s)
 end
