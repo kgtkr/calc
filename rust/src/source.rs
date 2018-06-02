@@ -61,6 +61,12 @@ impl Source {
     }
   }
 
+  pub fn parse(&mut self) -> Option<Rational> {
+    let x = self.expr()?;
+    self.eof()?;
+    Some(x)
+  }
+
   pub fn expr(&mut self) -> Option<Rational> {
     let mut x = self.term()?;
     while let Some(c) = self.expect(|c| c == '+' || c == '-') {
@@ -76,7 +82,6 @@ impl Source {
         }
       }
     }
-    self.eof()?;
     Some(x)
   }
 
