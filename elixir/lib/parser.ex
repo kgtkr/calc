@@ -16,7 +16,7 @@ defmodule Parser do
   def number(s) do
     case Integer.parse(s) do
       :error -> {:error, nil}
-      x -> {:ok, Rational.from_int(x)}
+      {x,s} -> {:ok, {Rational.from_int(x),s}}
     end
   end
 
@@ -24,52 +24,66 @@ defmodule Parser do
   def eof(_),do: {:error,nil}
 
   def expr(s) do
-    OK.with do
+    OK.for do
       {x,s}<-term(s)
-      expr(s,x)
+      res<-expr(s,x)
+    after
+      res
     end
   end
   def expr("+"<>s,n) do
-    OK.with do
+    OK.for do
       {x,s}<-term(s)
-      expr(s,Rational.add(n,x))
+      res<-expr(s,Rational.add(n,x))
+    after
+      res
     end
   end
   def expr("-"<>s,n) do
-    OK.with do
+    OK.for do
       {x,s}<-term(s)
-      expr(s,Rational.sub(n,x))
+      res<-expr(s,Rational.sub(n,x))
+    after
+      res
     end
   end
   def expr(s,n) do
-    OK.with do
+    OK.for do
       {_,s}=eof(s)
+    after
       {n,s}
     end
   end
   def term(s) do
-    OK.with do
+    OK.for do
       {x,s}<-factor(s)
-      term(s,x)
+      res<-term(s,x)
+    after
+      res
     end
   end
   def term("*"<>s,n) do
-    OK.with do
+    OK.for do
       {x,s}<-factor(s)
-      term(s,Rational.mul(n,x))
+      res<-term(s,Rational.mul(n,x))
+    after
+      res
     end
   end
   def term("/"<>s,n) do
-    OK.with do
+    OK.for do
       {x,s}<-factor(s)
-      term(s,Rational.div(n,x))
+      res<-term(s,Rational.div(n,x))
+    after
+      res
     end
   end
   def term(s,n),do: {:ok,{n,s}}
   def factor("("<>s) do
-    OK.with do
+    OK.for do
       {x,s}<-expr(s)
       char(s,")")
+    after
       x
     end
   end
