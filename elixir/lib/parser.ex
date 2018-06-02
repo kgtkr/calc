@@ -25,5 +25,12 @@ defmodule Parser do
 
   def expr(_),do: nil
   def term(_),do: nil
-  def factor(_),do: nil
+  def factor("("<>s) do
+    OK.with do
+      {x,s}<-expr(s)
+      char(s,")")
+      x
+    end
+  end
+  def factor(s),do: number(s)
 end
