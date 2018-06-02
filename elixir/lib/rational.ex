@@ -20,7 +20,7 @@ defmodule Rational do
 
   def to_string(:nan),do: "NaN"
   def to_string(%Rational{n: n, d: 1}), do: Kernel.to_string n
-  def to_string(%Rational{n: n, d: d}), do: Kernel.to_string n<>"/"Kernel.to_string d
+  def to_string(%Rational{n: n, d: d}), do: Kernel.to_string n <> "/" <> Kernel.to_string d
 
   def add(%Rational{n: a_n, d: a_d},%Rational{n: b_n, d: b_d}), do: new(a_n * b_d + b_n * a_d, a_d * b_d)
   def add(_,_), do: :nan
