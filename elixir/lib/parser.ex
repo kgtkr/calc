@@ -19,4 +19,7 @@ defmodule Parser do
       x -> {:ok, Rational.from_int(x)}
     end
   end
+
+  def eof("")->{:ok,{(),""}}
+  def eof(_)->{:error,nil}
 end
