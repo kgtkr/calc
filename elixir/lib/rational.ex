@@ -26,4 +26,7 @@ defmodule Rational do
 
   def sub(%Rational{n: a_n, d: a_d},%Rational{n: b_n, d: b_d}), do: new(a_n * b_d - b_n * a_d, a_d * b_d)
   def sub(_,_), do: nil
+
+  def mul(%Rational{n: a_n, d: a_d},%Rational{n: b_n, d: b_d}), do: new(a_n*b_n,a_d*b_d)
+  def mul(_,_), do: nil
 end
