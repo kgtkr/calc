@@ -29,4 +29,7 @@ defmodule Rational do
 
   def mul(%Rational{n: a_n, d: a_d},%Rational{n: b_n, d: b_d}), do: new(a_n*b_n,a_d*b_d)
   def mul(_,_), do: nil
+
+  def div(%Rational{n: a_n, d: a_d},%Rational{n: b_n, d: b_d}), do: new(a_n*b_d,a_d*b_n)
+  def div(_,_), do: nil  
 end
