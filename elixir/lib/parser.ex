@@ -4,7 +4,7 @@ require OK
 defmodule Parser do
   def expect(<<x::bytes-size(1)>><>xs,f) do
     if f.(x) do
-      {:ok,xs}
+      {:ok,{x,xs}}
     else
       {:error,nil}
     end
