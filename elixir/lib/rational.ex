@@ -10,7 +10,7 @@ defmodule Rational do
       g
     end
 
-    %Rational{n: n/g, d: d/g}
+    %Rational{n: Kernel.div(n,g), d: Kernel.div(d,g)}
   end
 
   def from_int(n), do: new n,1
