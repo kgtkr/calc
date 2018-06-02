@@ -1,3 +1,6 @@
+require OK
+
+# {:error,nil}|{:ok,{T,str}}
 defmodule Parser do
   def expect(<<x::bytes-size(1)>><>xs,f) do
     if f.(x) do
@@ -13,7 +16,7 @@ defmodule Parser do
   def number(s) do
     case Integer.parse(s) do
       :error -> {:error, nil}
-      x -> {:ok, x}
+      x -> {:ok, Rational.from_int(x)}
     end
   end
 end
