@@ -24,7 +24,25 @@ defmodule Parser do
   def eof(_),do: {:error,nil}
 
   def expr(_),do: nil
-  def term(_),do: nil
+  def term(s) do
+    OK.with do
+      {x,s}<-factor(s)
+      term(s,x)
+    end
+  end
+  def term("*"<>s,n) do
+    OK.with do
+      {x,s}<-factor(s)
+      term(s,Rational.mul(n,x))
+    end
+  end
+  def term("/"<>s,n) do
+    OK.with do
+      {x,s}<-factor(s)
+      term(s,Rational.div(n,x))
+    end
+  end
+  def term(s,n),do: {:ok,{n,s}}
   def factor("("<>s) do
     OK.with do
       {x,s}<-expr(s)
