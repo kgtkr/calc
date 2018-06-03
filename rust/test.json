@@ -1,0 +1,4 @@
+{
+  "build": "cargo build --release",
+  "run": "./target/release/calc $ARGS"
+}

@@ -1,4 +1,4 @@
 [[package]]
-name = "rust-calc"
+name = "calc"
 version = "0.1.0"
 
