@@ -10,6 +10,8 @@ defmodule Parser do
     end
   end
 
+  defp expect(_,_),do: {:error,nil}
+
   defp char(s,c),do: expect(s,fn x -> x==c end)
 
   defp number("+"<>_),do: {:error,nil}
