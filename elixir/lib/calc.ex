@@ -1,9 +1,9 @@
 require OK
 
 defmodule Calc do
-  def main() do
+  def main(args) do
     OK.try do
-      s<-case List.first System.argv do
+      s<-case List.first args do
         nil->{:error,nil}
         x->{:ok,x}
       end
