@@ -33,10 +33,14 @@ export class Parser {
     }
 
     number() {
+        let g;
         let s = "";
         try {
-            s += this.char("-");
-        } catch{ }
+            this.char("-");
+            g = -1;
+        } catch{
+            g = 1;
+        }
 
         while (true) {
             try {
@@ -50,7 +54,10 @@ export class Parser {
             }
         }
 
-        const v = +s;
+        if (s.length !== 1 && s[0] === "0") {
+            throw new Error();
+        }
+        const v = +s * g;
         if (isNaN(v)) {
             throw new Error();
         } else {
