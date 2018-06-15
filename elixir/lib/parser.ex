@@ -14,11 +14,15 @@ defmodule Parser do
 
   defp char(s,c),do: expect(s,fn x -> x==c end)
 
-  defp number("+"<>_),do: {:error,nil}
-  defp number(s) do
-    case Integer.parse(s) do
+  defp number("-"<>s),do: number("",-1,s)
+  defp number(s),do: number("",1,s)
+
+  defp number(n,g,<<c::bytes-size(1)>><>s) when c=="0" or c=="1" or c=="2" or c=="3" or c=="4" or c=="5" or c=="6" or c=="7" or c=="8" or c=="9",do: number(n<>c,g,s)
+  defp number("0"<><<_::bytes-size(1)>><>_,_,_),do: {:error, nil}
+  defp number(n,g,s) do
+    case Integer.parse(n) do
       :error -> {:error, nil}
-      {x,s} -> {:ok, {Rational.from_int(x),s}}
+      {x,_} -> {:ok, {Rational.from_int(x*g),s}}
     end
   end
 
