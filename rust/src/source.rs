@@ -42,15 +42,17 @@ impl Source {
 
   fn number(&mut self) -> Option<Rational> {
     let mut s = String::new();
-    if let Some(_) = self.char('-') {
-      s.push('-');
-    }
+    let g = if let Some(_) = self.char('-') { -1 } else { 1 };
 
     while let Some(c) = self.expect(|c| c.is_digit(10)) {
       s.push(c);
     }
 
-    s.parse::<i64>().ok().map(Rational::from)
+    if s.len() != 1 && s.clone().chars().nth(0) == Some('0') {
+      None
+    } else {
+      s.parse::<i64>().ok().map(|x| Rational::from(x * g))
+    }
   }
 
   fn eof(&self) -> Option<()> {
