@@ -1,0 +1,12 @@
+{
+  "build": [
+    "npm",
+    "run",
+    "build"
+  ],
+  "run": [
+    "node",
+    "dist/app.js",
+    "$ARGS"
+  ]
+}
