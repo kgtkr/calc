@@ -1,0 +1,9 @@
+{
+  "build": [
+    "./build"
+  ],
+  "run": [
+    "dist/calc",
+    "$ARGS"
+  ]
+}
