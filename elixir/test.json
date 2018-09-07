@@ -1,7 +1,13 @@
 {
-  "build": [
-    "mix",
-    "escript.build"
+  "builds": [
+    [
+      "mix",
+      "deps.get"
+    ],
+    [
+      "mix",
+      "escript.build"
+    ]
   ],
   "run": [
     "./calc",

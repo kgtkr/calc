@@ -1,8 +1,14 @@
 {
-  "build": [
-    "npm",
-    "run",
-    "build"
+  "builds": [
+    [
+      "npm",
+      "i"
+    ],
+    [
+      "npm",
+      "run",
+      "build"
+    ]
   ],
   "run": [
     "node",

@@ -1,8 +1,10 @@
 {
-  "build": [
-    "cargo",
-    "build",
-    "--release"
+  "builds": [
+    [
+      "cargo",
+      "build",
+      "--release"
+    ]
   ],
   "run": [
     "./target/release/calc",

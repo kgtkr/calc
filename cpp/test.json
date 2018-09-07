@@ -1,6 +1,8 @@
 {
-  "build": [
-    "./build"
+  "builds": [
+    [
+      "./build"
+    ]
   ],
   "run": [
     "dist/calc",
