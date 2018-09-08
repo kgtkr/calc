@@ -1,4 +1,5 @@
 class Ratio
+    attr_reader :d,:n
     def initialize(n,d)
         if d==0 then
             @n=1
