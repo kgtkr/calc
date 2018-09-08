@@ -1,7 +1,7 @@
 class Ratio
     attr_reader :d,:n
     def initialize(n,d)
-        if d==0 then
+        if d==0
             @n=1
             @d=0
         else
@@ -13,7 +13,7 @@ class Ratio
     end
 
     def to_str()
-        if @d==0 then
+        if @d==0
             "NaN"
         else
             @n.to_s+"/"+@d.to_s
@@ -21,7 +21,7 @@ class Ratio
     end
 
     def +(other)
-        if @d!=0&&other.d!=0 then
+        if @d!=0&&other.d!=0
             Ratio.new(@n * other.d + other.n * @d, @d * other.d)
         else
             Ratio.new(1,0)
@@ -29,7 +29,7 @@ class Ratio
     end
 
     def -(other)
-        if @d!=0&&other.d!=0 then
+        if @d!=0&&other.d!=0
             Ratio.new(@n * other.d - other.n * @d, @d * other.d)
         else
             Ratio.new(1,0)
@@ -37,7 +37,7 @@ class Ratio
     end
 
     def *(other)
-        if @d!=0&&other.d!=0 then
+        if @d!=0&&other.d!=0
             Ratio.new(@n*other.n, @d * other.d)
         else
             Ratio.new(1,0)
@@ -45,7 +45,7 @@ class Ratio
     end
 
     def /(other)
-        if @d!=0&&other.d!=0 then
+        if @d!=0&&other.d!=0
             Ratio.new(@n*other.d, @d * other.n)
         else
             Ratio.new(1,0)
