@@ -1,0 +1,8 @@
+{
+    "builds": [],
+    "run": [
+        "ruby",
+        "main.rb",
+        "$ARGS"
+    ]
+}
