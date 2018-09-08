@@ -97,7 +97,7 @@ class Parser
                 x=x*self.factor
                 break
             when "/"
-                x/self.factor
+                x=x/self.factor
                 break
             end
         end
@@ -118,7 +118,7 @@ class Parser
                 x=x+self.term
                 break
             when "-"
-                x+self.term
+                x=x-self.term
                 break
             end
         end
