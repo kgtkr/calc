@@ -17,13 +17,13 @@ class Parser
 
     def next
         v=self.peak
-        @pos++
+        @pos+=1
         v
     end
 
     def expect(f)
         v=self.peak
-        if f(v)
+        if f.call(v)
             self.next
             v
         else

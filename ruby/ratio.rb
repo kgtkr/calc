@@ -16,7 +16,11 @@ class Ratio
         if @d==0
             "NaN"
         else
-            @n.to_s+"/"+@d.to_s
+            if @d==1
+                @n.to_s
+            else
+                @n.to_s+"/"+@d.to_s
+            end
         end
     end
 
