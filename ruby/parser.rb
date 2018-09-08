@@ -95,10 +95,8 @@ class Parser
             case op
             when "*"
                 x=x*self.factor
-                break
             when "/"
                 x=x/self.factor
-                break
             end
         end
         x
@@ -116,10 +114,8 @@ class Parser
             case op
             when "+"
                 x=x+self.term
-                break
             when "-"
                 x=x-self.term
-                break
             end
         end
         x
