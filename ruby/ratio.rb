@@ -6,6 +6,7 @@ class Ratio
             @d=0
         else
             g=n.abs.gcd(d.abs)
+            g = d < 0 ? -g : g
             @n=n/g
             @d=d/g
         end
