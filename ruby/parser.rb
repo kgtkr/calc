@@ -52,7 +52,7 @@ class Parser
             end
         end
 
-        if s.length!=1&&s[0]==0
+        if s.length!=1&&s[0]=="0"
             raise ParserError.new
         end
         
