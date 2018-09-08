@@ -38,7 +38,7 @@ class Parser
     def number
         s=""
         begin
-            self.char("-1")
+            self.char("-")
             g=-1
         rescue => error
             g=1
