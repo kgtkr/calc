@@ -1,4 +1,4 @@
-class Rational
+class Ratio
     def initialize(n,d)
         if d==0 then
             @n=1
@@ -21,33 +21,33 @@ class Rational
 
     def +(other)
         if @d!=0&&other.d!=0 then
-            Rational.new(@n * other.d + other.n * @d, @d * other.d)
+            Ratio.new(@n * other.d + other.n * @d, @d * other.d)
         else
-            Rational.new(1,0)
+            Ratio.new(1,0)
         end
     end
 
     def -(other)
         if @d!=0&&other.d!=0 then
-            Rational.new(@n * other.d - other.n * @d, @d * other.d)
+            Ratio.new(@n * other.d - other.n * @d, @d * other.d)
         else
-            Rational.new(1,0)
+            Ratio.new(1,0)
         end
     end
 
     def *(other)
         if @d!=0&&other.d!=0 then
-            Rational.new(@n*other.n, @d * other.d)
+            Ratio.new(@n*other.n, @d * other.d)
         else
-            Rational.new(1,0)
+            Ratio.new(1,0)
         end
     end
 
     def /(other)
         if @d!=0&&other.d!=0 then
-            Rational.new(@n*other.d, @d * other.n)
+            Ratio.new(@n*other.d, @d * other.n)
         else
-            Rational.new(1,0)
+            Ratio.new(1,0)
         end
     end
 end
