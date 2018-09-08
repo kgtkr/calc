@@ -16,15 +16,15 @@ class Parser
     end
 
     def next
-        v=@peak
+        v=self.peak
         @pos++
         v
     end
 
     def expect(f)
-        v=@peak
+        v=self.peak
         if f(v)
-            @next
+            self.next
             v
         else
             raise ParserError.new
@@ -32,13 +32,13 @@ class Parser
     end
 
     def char(c)
-        @expect(lambda{|v|v==c})
+        self.expect(lambda{|v|v==c})
     end
 
     def number
         s=""
         begin
-            @char("-1")
+            self.char("-1")
             g=-1
         rescue => error
             g=1
@@ -46,7 +46,7 @@ class Parser
 
         while true
             begin
-                s+=@expect(lambda{|v|"1234567890".index(v)!=nil})
+                s+=self.expect(lambda{|v|"1234567890".index(v)!=nil})
             rescue => error
                 break
             end
@@ -73,31 +73,31 @@ class Parser
 
     def factor
         begin
-            @char("(")
+            self.char("(")
         rescue =>error
-            return @number
+            return self.number
         end
 
-        v=@expr
+        v=self.expr
         char(")")
         v
     end
 
     def term
-        x=@factor
+        x=self.factor
         while true
             begin
-                op=@expect(lambda{|c|c=="*"||c=="/"})
+                op=self.expect(lambda{|c|c=="*"||c=="/"})
             rescue => error
                 break
             end
 
             case op
             when "*"
-                x=x*@factor
+                x=x*self.factor
                 break
             when "/"
-                x/@factor
+                x/self.factor
                 break
             end
         end
@@ -105,20 +105,20 @@ class Parser
     end
 
     def expr
-        x=@term
+        x=self.term
         while true
             begin
-                op=@expect(lambda{|c|c=="+"||c=="-"})
+                op=self.expect(lambda{|c|c=="+"||c=="-"})
             rescue => error
                 break
             end
 
             case op
             when "+"
-                x=x+@term
+                x=x+self.term
                 break
             when "-"
-                x+@term
+                x+self.term
                 break
             end
         end
@@ -126,7 +126,7 @@ class Parser
     end
 
     def parse
-        v=@expr
+        v=self.expr
         eof
         v
     end
