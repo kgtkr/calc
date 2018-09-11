@@ -1,1 +1,7 @@
-(define my-gcd (lambda (a b) (if (equal? b 0) a (my-gcd b (mod a b)))))
+(define rational
+    (lambda (n d)
+        (if (equal? d 0)
+            ()
+            (let ((g (gcd (abs n) (abs d))))
+                (let ((g (if (< d 0) (- g) g)))
+                    (list (/ n g) (/ d g)))))))
