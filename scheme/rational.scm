@@ -10,7 +10,10 @@
     "NaN"
     (if (equal? (vector-ref x 1) 1)
       (number->string (vector-ref x 0))
-      (string-append (number->string (vector-ref x 0)) "/" (number->string (vector-ref x 1))))))
+      (string-append
+        (number->string (vector-ref x 0))
+        "/"
+        (number->string (vector-ref x 1))))))
 
 (define (rational+ x y)
   (if (or (null? x) (null? y))
