@@ -1,3 +1,9 @@
+(define (rational-n x)
+  (vector-ref x 0))
+
+(define (rational-d x)
+  (vector-ref x 1))
+
 (define (make-rational n d)
   (if (equal? d 0)
     ()
@@ -8,22 +14,22 @@
 (define (rational->string x)
   (if (null? x)
     "NaN"
-    (if (equal? (vector-ref x 1) 1)
-      (number->string (vector-ref x 0))
+    (if (equal? (rational-d x) 1)
+      (number->string (rational-n x))
       (string-append
-        (number->string (vector-ref x 0))
+        (number->string (rational-n x))
         "/"
-        (number->string (vector-ref x 1))))))
+        (number->string (rational-d x))))))
 
 (define (rational+ x y)
   (if (or (null? x) (null? y))
     ()
     (make-rational
       (+
-        (* (vector-ref x 0) (vector-ref y 1))
-        (* (vector-ref y 0) (vector-ref x 1)))
+        (* (rational-n x) (vector-ref y 1))
+        (* (vector-ref y 0) (rational-d x)))
       (*
-        (vector-ref x 1)
+        (rational-d x)
         (vector-ref y 1)))))
 
 (define (rational- x y)
@@ -31,10 +37,10 @@
     ()
     (make-rational
       (-
-        (* (vector-ref x 0) (vector-ref y 1))
-        (* (vector-ref y 0) (vector-ref x 1)))
+        (* (rational-n x) (vector-ref y 1))
+        (* (vector-ref y 0) (rational-d x)))
       (*
-        (vector-ref x 1)
+        (rational-d x)
         (vector-ref y 1)))))
 
 (define (rational* x y)
@@ -42,10 +48,10 @@
     ()
     (make-rational
       (*
-        (vector-ref x 0)
+        (rational-n x)
         (vector-ref y 0))
       (*
-        (vector-ref x 1)
+        (rational-d x)
         (vector-ref y 1)))))
 
 (define (rational/ x y)
@@ -53,8 +59,8 @@
     ()
     (make-rational
       (*
-        (vector-ref x 0)
+        (rational-n x)
         (vector-ref y 1))
       (*
-        (vector-ref x 1)
+        (rational-d x)
         (vector-ref y 0)))))
