@@ -130,6 +130,7 @@
                 (cons s ())
             )
         )
+        [(s . ()) (cons s x)]
         [(s . op) (match (parser-factor s)
             [(s . y)
                 (match op
@@ -138,7 +139,6 @@
                 )
             ]
         )]
-        [(s . ()) (cons s x)]
         )
     )
 )
