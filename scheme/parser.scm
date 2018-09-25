@@ -119,10 +119,7 @@
             ]
     )
 )
-(char->integer #\()
 (define (is-digit c)
     (and (char<=? #\0 c) (char<=? c #\9))
 )
-
-(print (parser-number (string->list "1234a5")))
 
