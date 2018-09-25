@@ -122,7 +122,7 @@
     (define (f s x)
         (match (parser-error-guard
             (lambda ()
-                (parser-expect (lambda (c) (or (= c #\*) (= c #\/))))
+                (parser-expect s (lambda (c) (or (= c #\*) (= c #\/))))
             )
             (lambda ()
                 (cons s ())
@@ -148,7 +148,7 @@
     (define (f s x)
         (match (parser-error-guard
             (lambda ()
-                (parser-expect (lambda (c) (or (= c #\+) (= c #\-))))
+                (parser-expect s (lambda (c) (or (= c #\+) (= c #\-))))
             )
             (lambda ()
                 (cons s ())
