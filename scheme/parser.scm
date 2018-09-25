@@ -68,13 +68,25 @@
                     (lambda () (cons s ()))
                 )
             )
-            (f s)
+            (match (f s)
+                [(s . ns)
+                    (if (and (= (length ns) 1) (= (car ns) #\0))
+                        (raise-parser-error)
+                        (let v (string->number (list->string ns))
+                            (if v
+                                (make-rational (* v g) 1)
+                                (raise-parser-error)
+                            )
+                        )
+                    )
+                ]
+            )
         ]
     )
 )
-
 (define (is-digit c)
     (and (char<=? #\0 c) (char<=? c #\9))
 )
 
+(print (parser-number (string->list "1234a5")))
 
