@@ -147,6 +147,42 @@
     )
 )
 
+(define (parser-expr s)
+    (define (f s x)
+        (match (parser-error-guard
+            (lambda ()
+                (parser-expect (lambda (c) (or (= c #\+) (= c #\-))))
+            )
+            (lambda ()
+                (cons s ())
+            )
+        )
+        [(s . ()) (cons s x)]
+        [(s . op) (match (parser-term s)
+            [(s . y)
+                (match op
+                    [(#\+) (f s (rational+ x y))]
+                    [(#\-) (f s (rational- x y))]
+                )
+            ]
+        )]
+        )
+    )
+
+    (match (parser-term s)
+        [(s . x) (f s x)]
+    )
+)
+
+(define (parse s)
+    (match (parser-expr s)
+        [(s . x)
+            (parser-eof s)
+            x
+        ]
+    )
+)
+
 (define (is-digit c)
     (and (char<=? #\0 c) (char<=? c #\9))
 )
