@@ -84,6 +84,14 @@
         ]
     )
 )
+
+(define (eof s)
+    (if (null? s)
+        (cons s ())
+        (raise-parser-error)
+    )
+)
+
 (define (is-digit c)
     (and (char<=? #\0 c) (char<=? c #\9))
 )
