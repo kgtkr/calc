@@ -50,18 +50,18 @@
             (lambda ()
                 (match (parser-char s #\-)
                     [(s . _)
-                        (s,-1)
+                        (cons s -1)
                     ])
             )
-            (lambda () (s,1))
+            (lambda () (cons s 1))
         )
         [(s . g)
             (define (f s)
                 (parser-error-guard
                     (lambda () (match (parser-expect s is-digit)
-                        [(s . x) (cons x (f s))]
+                        [(s . x) (cons s (cons x (cdr (f s))))]
                     ))
-                    (lambda () ())
+                    (lambda () (cons s ()))
                 )
             )
         ]
