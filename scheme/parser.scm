@@ -119,6 +119,30 @@
             ]
     )
 )
+
+(define (parser-term s)
+    (define (f s x)
+        (match (parser-error-guard
+            (lambda ()
+                (parser-expect (lambda (c) (or (= c #\*) (= c #\/))))
+            )
+            (lambda ()
+                (cons s ())
+            )
+        )
+        [(s . op) (match (parser-factor s)
+            [(s . y)
+                (match op
+                    [(#\*) (f s (rational* x y))]
+                    [(#\/) (f s (rational/ x y))]
+                )
+            ]
+        )]
+        [(s . ()) (cons s x)]
+        )
+    )
+)
+
 (define (is-digit c)
     (and (char<=? #\0 c) (char<=? c #\9))
 )
