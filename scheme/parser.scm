@@ -92,13 +92,12 @@
 
 (define (parser-factor s)
     (match (parser-error-guard
-        (lambda () (
+        (lambda ()
             (match (parser-char s (string-ref "(" 0))
                 [(s . _)
                     (cons s #t)
-                ]
-            )
-        ))
+                ])
+        )
         (lambda () (cons s #f))
     )
             [(s . #t)
