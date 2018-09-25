@@ -59,11 +59,16 @@
             (define (f s)
                 (parser-error-guard
                     (lambda () (match (parser-expect s is-digit)
-                        [(s . x) (cons s (cons x (cdr (f s))))]
+                        [(s . x)
+                            (match (f s)
+                                [(s . x2) (cons s (cons x x2))]
+                            )
+                        ]
                     ))
                     (lambda () (cons s ()))
                 )
             )
+            (f s)
         ]
     )
 )
@@ -71,3 +76,5 @@
 (define (is-digit c)
     (and (char<=? #\0 c) (char<=? c #\9))
 )
+
+
