@@ -1,5 +1,3 @@
-(use util.match)
-(use srfi-1)
 (define parser-error 'parser-error)
 (define (raise-parser-error)
     (raise parser-error))
@@ -186,4 +184,3 @@
 (define (is-digit c)
     (and (char<=? #\0 c) (char<=? c #\9))
 )
-

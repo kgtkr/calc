@@ -1,3 +1,7 @@
+(use util.match)
+(load "./parser")
+(load "./rational")
+
 (print (if (= (length *argv*) 0)
 "Error"
 (parser-error-guard
