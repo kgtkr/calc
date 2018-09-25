@@ -72,7 +72,7 @@
                 [(s . ns)
                     (if (and (= (length ns) 1) (= (car ns) #\0))
                         (raise-parser-error)
-                        (let v (string->number (list->string ns))
+                        (let ((v (string->number (list->string ns))))
                             (if v
                                 (make-rational (* v g) 1)
                                 (raise-parser-error)
