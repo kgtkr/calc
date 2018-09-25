@@ -92,7 +92,34 @@
     )
 )
 
-
+(define (parser-factor s)
+    (match (parser-error-guard
+        (lambda () (
+            (match (parser-char s (string-ref "(" 0))
+                [(s . _)
+                    (cons s #t)
+                ]
+            )
+        ))
+        (lambda () (cons s #f))
+    )
+            [(s . #t)
+                (match (parser-expr s)
+                    [(s . x)
+                        (match (parser-char s (string-ref ")" 0))
+                            [(s . _)
+                                (cons s x)
+                            ]
+                        )
+                    ]
+                )
+            ]
+            [(s . #f)
+                (parser-number s)
+            ]
+    )
+)
+(char->integer #\()
 (define (is-digit c)
     (and (char<=? #\0 c) (char<=? c #\9))
 )
