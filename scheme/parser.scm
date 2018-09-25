@@ -132,8 +132,8 @@
         [(s . op) (match (parser-factor s)
             [(s . y)
                 (match op
-                    [(#\*) (f s (rational* x y))]
-                    [(#\/) (f s (rational/ x y))]
+                    [#\* (f s (rational* x y))]
+                    [#\/ (f s (rational/ x y))]
                 )
             ]
         )]
@@ -154,18 +154,18 @@
                 (cons s ())
             )
         )
-        [(s . ()) (cons s x)]
-        [(s . op) (match (parser-term s)
-            [(s . y)
-                (match op
-                    [(#\+) (f s (rational+ x y))]
-                    [(#\-) (f s (rational- x y))]
-                )
-            ]
-        )]
+            [(s . ()) (cons s x)]
+            [(s . op) (match (parser-term s)
+                [(s . y)
+                    (match op
+                        [#\+ (f s (rational+ x y))]
+                        [#\- (f s (rational- x y))]
+                    )
+                ]
+            )]
         )
     )
-
+    
     (match (parser-term s)
         [(s . x) (f s x)]
     )
