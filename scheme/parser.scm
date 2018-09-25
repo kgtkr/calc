@@ -68,7 +68,7 @@
             )
             (match (f s)
                 [(s . ns)
-                    (if (and (not (= (length ns) 1)) (char=? (car ns) #\0))
+                    (if (or (null? ns) (and (not (= (length ns) 1)) (char=? (car ns) #\0)))
                         (raise-parser-error)
                         (let ((v (string->number (list->string ns))))
                             (if v
