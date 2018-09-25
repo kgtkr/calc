@@ -141,6 +141,10 @@
         )]
         )
     )
+
+    (match (parser-factor s)
+        [(s . x) (f s x)]
+    )
 )
 
 (define (is-digit c)
