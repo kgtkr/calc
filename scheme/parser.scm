@@ -72,7 +72,7 @@
                         (raise-parser-error)
                         (let ((v (string->number (list->string ns))))
                             (if v
-                                (make-rational (* v g) 1)
+                                (cons s (make-rational (* v g) 1))
                                 (raise-parser-error)
                             )
                         )
@@ -139,7 +139,6 @@
         )]
         )
     )
-
     (match (parser-factor s)
         [(s . x) (f s x)]
     )
