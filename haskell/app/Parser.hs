@@ -10,9 +10,7 @@ instance Functor Parser where
 instance Applicative Parser where
     pure x = Parser (\s->Just (x,s))
 
-    Parser x  <*> Parser y       = Parser $ \s->case x s of
-        Just (f,s)->(fmap (B.first f) . y) s
-        Nothing->Nothing
+    Parser x  <*> Parser y       = Parser $ \s->x s >>= (\(f,s)->(fmap (B.first f) . y) s)
 
 instance Monad Parser where
     Parser x >>= f = Parser $ \s->case x s of
