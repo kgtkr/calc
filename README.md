@@ -7,9 +7,9 @@
 * C++
 * Elixir
 * Scheme
+* Haskell
 
 ## 実装してない(やったことある)
-* Haskell
 * Java
 * Kotlin
 * Scala
