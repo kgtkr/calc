@@ -4,29 +4,15 @@ import           Ratio
 import qualified Data.Bifunctor                as B
 import           Data.Char
 import           Safe
+import           Control.Monad.State
 
-data Parser a = Parser (String -> Maybe (a,String))
-
-instance Functor Parser where
-    fmap f (Parser x) = Parser $ fmap (B.first f) . x
-
-instance Applicative Parser where
-    pure x = Parser $ \s->Just (x,s)
-
-    Parser x  <*> Parser y       = Parser $ \s->do
-        (f,s)<-x s
-        (fmap (B.first f) . y) s
-
-instance Monad Parser where
-    Parser x >>= f = Parser $ \s->do
-        (a,s)<-x s
-        let Parser g=f a in g s
+type Parser = StateT String Maybe
 
 runParser :: Parser a -> String -> Maybe a
-runParser (Parser x) = fmap fst . x
+runParser = evalStateT
 
 parseError :: Parser a
-parseError = Parser $ const Nothing
+parseError = StateT $ const Nothing
 
 parseErrorIf :: Bool -> Parser ()
 parseErrorIf True  = parseError
@@ -36,9 +22,9 @@ parseOK :: Parser a -> Parser Bool
 parseOK p = parseOr [parseValue p True, return False]
 
 parseOr :: [Parser a] -> Parser a
-parseOr x = Parser $ parseOr' x
+parseOr x = StateT $ parseOr' x
   where
-    parseOr' (Parser p : ps) s = case p s of
+    parseOr' (StateT p : ps) s = case p s of
         Just x  -> Just x
         Nothing -> parseOr' ps s
     parseOr' [] _ = Nothing
@@ -63,13 +49,13 @@ parseTryWhile p = do
         Nothing -> return []
 
 parsePeak :: Parser Char
-parsePeak = Parser parsePeak'
+parsePeak = StateT parsePeak'
   where
     parsePeak' []        = Nothing
     parsePeak' s@(x : _) = Just (x, s)
 
 parseNext :: Parser Char
-parseNext = Parser parseNext'
+parseNext = StateT parseNext'
   where
     parseNext' []       = Nothing
     parseNext' (x : xs) = Just (x, xs)
@@ -99,7 +85,7 @@ parseNumber = do
     return $ ratio (n * g) 1
 
 parseEof :: Parser ()
-parseEof = Parser parseEof'
+parseEof = StateT parseEof'
   where
     parseEof' [] = Just ((), [])
     parseEof' _  = Nothing
