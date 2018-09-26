@@ -1,6 +1,12 @@
 module Main where
 
-import Lib
+import           System.Environment
+import           Ratio
+import           Parser
 
 main :: IO ()
-main = someFunc
+main = do
+    args <- getArgs
+    print $ case args of
+        (s : _) -> (maybe "Error" show) (runParser parseCalc s)
+        []      -> "Error"

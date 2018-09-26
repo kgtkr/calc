@@ -1,0 +1,14 @@
+{
+  "builds": [
+    [
+      "stack",
+      "build"
+    ]
+  ],
+  "run": [
+    "stack",
+    "exec",
+    "haskell-exe",
+    "$ARGS"
+  ]
+}
