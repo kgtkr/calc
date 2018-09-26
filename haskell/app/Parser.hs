@@ -129,14 +129,14 @@ parseTerm = do
     parseTerm' x
   where
     parseTerm' x = do
-        op <- parseTry $ parseExpect (\c -> c == '*' || c == '/')
+        op <-
+            parseTry
+            $         parseValue (parseChar '*') (*)
+            `parseOr` parseValue (parseChar '/') (/)
         case op of
-            Just '*' -> do
+            Just op -> do
                 y <- parseFactor
-                parseTerm' $ x * y
-            Just '/' -> do
-                y <- parseFactor
-                parseTerm' $ x / y
+                parseTerm' $ x `op` y
             Nothing -> return x
 
 
@@ -146,14 +146,14 @@ parseExpr = do
     parseExpr' x
   where
     parseExpr' x = do
-        op <- parseTry $ parseExpect (\c -> c == '+' || c == '-')
+        op <-
+            parseTry
+            $         parseValue (parseChar '+') (+)
+            `parseOr` parseValue (parseChar '-') (-)
         case op of
-            Just '+' -> do
+            Just op -> do
                 y <- parseTerm
-                parseExpr' $ x + y
-            Just '-' -> do
-                y <- parseTerm
-                parseExpr' $ x - y
+                parseExpr' $ x `op` y
             Nothing -> return x
 
 
