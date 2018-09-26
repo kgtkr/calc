@@ -1,6 +1,9 @@
 module Parser where
 
+import           Ratio
 import qualified Data.Bifunctor                as B
+import           Data.Char
+import           Safe
 
 data Parser a = Parser (String -> Maybe (a,String))
 
@@ -21,12 +24,35 @@ runParser (Parser x) = fmap fst . x
 parseError :: Parser a
 parseError = Parser $ \_ -> Nothing
 
+parseErrorIf :: Bool -> Parser ()
+parseErrorIf True  = parseError
+parseErrorIf False = return ()
+
 parseOr :: Parser a -> Parser a -> Parser a
 parseOr (Parser a) (Parser b) = Parser parseOr'
   where
     parseOr' s = case a s of
         Just x  -> Just x
         Nothing -> b s
+
+parseTry :: Parser a -> Parser (Maybe a)
+parseTry p = parseOr ((fmap Just) p) (return Nothing)
+
+parseUnTry :: Parser (Maybe a) -> Parser a
+parseUnTry p = do
+    x <- p
+    case x of
+        Just x  -> return x
+        Nothing -> parseError
+
+parseTryWhile :: Parser a -> Parser [a]
+parseTryWhile p = do
+    x <- parseTry p
+    case x of
+        Just x -> do
+            xs <- parseTryWhile p
+            return $ x : xs
+        Nothing -> return []
 
 parsePeak :: Parser Char
 parsePeak = Parser parsePeak'
@@ -52,3 +78,18 @@ parseExpect f = do
 
 parseChar :: Char -> Parser Char
 parseChar c = parseExpect (== c)
+
+parseNumber :: Parser Ratio
+parseNumber = do
+    g <- parseOr
+        (do
+            parseChar '-'
+            return (-1)
+        )
+        (return 1)
+    ns <- parseTryWhile $ parseExpect isDigit
+    case ns of
+        '0' : _ : _ -> parseError
+        _           -> return ()
+    n <- (parseUnTry . return . readMay) ns
+    return $ ratio (n * g) 1
