@@ -11,12 +11,12 @@ instance Functor Parser where
     fmap f (Parser x) = Parser $ \s->(fmap (B.first f) . x) s
 
 instance Applicative Parser where
-    pure x = Parser (\s->Just (x,s))
+    pure x = Parser $ \s->Just (x,s)
 
-    Parser x  <*> Parser y       = Parser $ \s->x s >>= (\(f,s)->(fmap (B.first f) . y) s)
+    Parser x  <*> Parser y       = Parser $ \s->x s >>= \(f,s)->(fmap (B.first f) . y) s
 
 instance Monad Parser where
-    Parser x >>= f = Parser $ \s->x s >>= (\(a,s)->let Parser g=f a in g s)
+    Parser x >>= f = Parser $ \s->x s >>= \(a,s)->let Parser g=f a in g s
 
 runParser :: Parser a -> String -> Maybe a
 runParser (Parser x) = fmap fst . x
@@ -124,7 +124,7 @@ parseTerm = do
     parseTerm' x
   where
     parseTerm' x = do
-        op <- parseTry (parseExpect (\c -> c == '*' || c == '/'))
+        op <- parseTry $ parseExpect (\c -> c == '*' || c == '/')
         case op of
             Just '*' -> do
                 y <- parseFactor
@@ -141,7 +141,7 @@ parseExpr = do
     parseExpr' x
   where
     parseExpr' x = do
-        op <- parseTry (parseExpect (\c -> c == '+' || c == '-'))
+        op <- parseTry $ parseExpect (\c -> c == '+' || c == '-')
         case op of
             Just '+' -> do
                 y <- parseTerm
