@@ -15,6 +15,6 @@ instance Applicative Parser where
         Nothing->Nothing
 
 instance Monad Parser where
-    Parser x >>= f = Parser (\s->let (a,s) = x s in
-        case f a of
-            Parser g->g s)
+    Parser x >>= f = Parser $ \s->case x s of
+        Just (a,s)->let Parser g=f a in g s
+        Nothing->Nothing
