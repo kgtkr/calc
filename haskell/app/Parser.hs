@@ -19,9 +19,15 @@ runParser :: Parser a -> String -> Maybe a
 runParser (Parser x) = fmap fst . x
 
 parseOr :: Parser a -> Parser a -> Parser a
-parseOr (Parser a) (Parser b) =
-    Parser
-        $ (\s -> case a s of
-              Just x  -> Just x
-              Nothing -> b s
-          )
+parseOr (Parser a) (Parser b) = Parser parseOr'
+  where
+    parseOr' s = case a s of
+        Just x  -> Just x
+        Nothing -> b s
+
+
+parsePeak :: Parser Char
+parsePeak = Parser parsePeak'
+  where
+    parsePeak' []        = Nothing
+    parsePeak' s@(x : _) = Just (x, s)
