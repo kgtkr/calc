@@ -151,3 +151,9 @@ parseExpr = do
                 parseExpr' $ x - y
             Nothing -> return x
 
+
+parseCalc :: Parser Ratio
+parseCalc = do
+    x <- parseExpr
+    parseEof
+    return x
