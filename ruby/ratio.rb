@@ -1,3 +1,13 @@
+def sign(x)
+    if x > 0
+        1
+    elsif x < 0
+        -1
+    else
+        0
+    end
+end
+
 class Ratio
     attr_reader :d,:n
     def initialize(n,d)
@@ -5,8 +15,7 @@ class Ratio
             @n=1
             @d=0
         else
-            g=n.abs.gcd(d.abs)
-            g = d < 0 ? -g : g
+            g=sign(d)*n.abs.gcd(d.abs)
             @n=n/g
             @d=d/g
         end
