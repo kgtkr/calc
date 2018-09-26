@@ -1,3 +1,9 @@
+(define (signum x)
+  (cond
+    ((positive? x) 1)
+    ((negative? x) -1)
+    (else 0)))
+
 (define (rational-n x)
   (vector-ref x 0))
 
@@ -7,9 +13,8 @@
 (define (make-rational n d)
   (if (equal? d 0)
     ()
-    (let ((g (gcd (abs n) (abs d))))
-      (let ((g (if (< d 0) (- g) g)))
-        (vector (/ n g) (/ d g))))))
+    (let ((g (* (signum d) (gcd (abs n) (abs d)))))
+      (vector (/ n g) (/ d g)))))
 
 (define (rational->string x)
   (if (null? x)
