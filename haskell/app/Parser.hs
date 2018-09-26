@@ -11,3 +11,7 @@ instance Applicative Parser where
 
     Parser _ f  <*> m       = fmap f m
     ParseError <*> _      = ParseError
+
+instance Monad Parser where
+    Parser _ x >>= f = f x
+    ParseError >>= _ =ParseError
