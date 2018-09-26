@@ -28,6 +28,14 @@ parseErrorIf :: Bool -> Parser ()
 parseErrorIf True  = parseError
 parseErrorIf False = return ()
 
+parseOK :: Parser a -> Parser Bool
+parseOK p = parseOr
+    (do
+        p
+        return True
+    )
+    (return False)
+
 parseOr :: Parser a -> Parser a -> Parser a
 parseOr (Parser a) (Parser b) = Parser parseOr'
   where
@@ -99,3 +107,47 @@ parseEof = Parser parseEof'
   where
     parseEof' [] = Just ((), [])
     parseEof' _  = Nothing
+
+parseFactor :: Parser Ratio
+parseFactor = do
+    isExpr <- parseOK $ parseChar '('
+    if isExpr
+        then do
+            x <- parseExpr
+            parseChar ')'
+            return x
+        else parseNumber
+
+parseTerm :: Parser Ratio
+parseTerm = do
+    x <- parseFactor
+    parseTerm' x
+  where
+    parseTerm' x = do
+        op <- parseTry (parseExpect (\c -> c == '*' || c == '/'))
+        case op of
+            Just '*' -> do
+                y <- parseFactor
+                parseTerm' $ x * y
+            Just '/' -> do
+                y <- parseFactor
+                parseTerm' $ x / y
+            Nothing -> return x
+
+
+parseExpr :: Parser Ratio
+parseExpr = do
+    x <- parseTerm
+    parseExpr' x
+  where
+    parseExpr' x = do
+        op <- parseTry (parseExpect (\c -> c == '+' || c == '-'))
+        case op of
+            Just '+' -> do
+                y <- parseTerm
+                parseExpr' $ x + y
+            Just '-' -> do
+                y <- parseTerm
+                parseExpr' $ x - y
+            Nothing -> return x
+
