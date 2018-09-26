@@ -30,21 +30,22 @@ parseErrorIf False = return ()
 
 parseOK :: Parser a -> Parser Bool
 parseOK p = parseOr
-    (do
+    [ do
         p
         return True
-    )
-    (return False)
+    , return False
+    ]
 
-parseOr :: Parser a -> Parser a -> Parser a
-parseOr (Parser a) (Parser b) = Parser parseOr'
+parseOr :: [Parser a] -> Parser a
+parseOr x = Parser $ parseOr' x
   where
-    parseOr' s = case a s of
+    parseOr' (Parser p : ps) s = case p s of
         Just x  -> Just x
-        Nothing -> b s
+        Nothing -> parseOr' ps s
+    parseOr' [] _ = Nothing
 
 parseTry :: Parser a -> Parser (Maybe a)
-parseTry p = parseOr ((fmap Just) p) (return Nothing)
+parseTry p = parseOr [(fmap Just) p, return Nothing]
 
 parseUnTry :: Parser (Maybe a) -> Parser a
 parseUnTry p = do
@@ -94,12 +95,7 @@ parseChar c = parseExpect (== c)
 
 parseNumber :: Parser Ratio
 parseNumber = do
-    g <- parseOr
-        (do
-            parseChar '-'
-            return (-1)
-        )
-        (return 1)
+    g  <- parseOr [parseValue (parseChar '-') (-1), return 1]
     ns <- parseTryWhile $ parseExpect isDigit
     case ns of
         '0' : _ : _ -> parseError
@@ -129,10 +125,8 @@ parseTerm = do
     parseTerm' x
   where
     parseTerm' x = do
-        op <-
-            parseTry
-            $         parseValue (parseChar '*') (*)
-            `parseOr` parseValue (parseChar '/') (/)
+        op <- parseTry $ parseOr
+            [parseValue (parseChar '*') (*), parseValue (parseChar '/') (/)]
         case op of
             Just op -> do
                 y <- parseFactor
@@ -146,10 +140,8 @@ parseExpr = do
     parseExpr' x
   where
     parseExpr' x = do
-        op <-
-            parseTry
-            $         parseValue (parseChar '+') (+)
-            `parseOr` parseValue (parseChar '-') (-)
+        op <- parseTry $ parseOr
+            [parseValue (parseChar '+') (+), parseValue (parseChar '-') (-)]
         case op of
             Just op -> do
                 y <- parseTerm
