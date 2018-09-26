@@ -14,8 +14,7 @@ export function rational(n: number, d: number) {
   if (d == 0) {
     return null;
   } else {
-    let g = gcd(Math.abs(n), Math.abs(d));
-    g = d < 0 ? -g : g;
+    const g = Math.sign(d) * gcd(Math.abs(n), Math.abs(d));
     return {
       n: n / g | 0,
       d: d / g | 0
