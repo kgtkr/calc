@@ -1,14 +1,13 @@
 defmodule Rational do
   defstruct [:n, :d]
 
+  def sign(x) when x>0,do: 1
+  def sign(x) when x<0,do: -1
+  def sign(0),do: 0
+
   def new(_,0) , do: :nan
   def new(n,d) do
-    g = gcd abs(n), abs(d)
-    g=if d < 0 do
-      -g
-    else
-      g
-    end
+    g = (sign d) * (gcd abs(n), abs(d))
 
     %Rational{n: Kernel.div(n,g), d: Kernel.div(d,g)}
   end
