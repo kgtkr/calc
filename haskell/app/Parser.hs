@@ -13,6 +13,4 @@ instance Applicative Parser where
     Parser x  <*> Parser y       = Parser $ \s->x s >>= (\(f,s)->(fmap (B.first f) . y) s)
 
 instance Monad Parser where
-    Parser x >>= f = Parser $ \s->case x s of
-        Just (a,s)->let Parser g=f a in g s
-        Nothing->Nothing
+    Parser x >>= f = Parser $ \s->x s >>= (\(a,s)->let Parser g=f a in g s)
