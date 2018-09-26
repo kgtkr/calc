@@ -9,6 +9,7 @@
     "stack",
     "exec",
     "haskell-exe",
+    "--",
     "$ARGS"
   ]
 }
