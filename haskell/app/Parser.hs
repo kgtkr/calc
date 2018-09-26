@@ -14,3 +14,6 @@ instance Applicative Parser where
 
 instance Monad Parser where
     Parser x >>= f = Parser $ \s->x s >>= (\(a,s)->let Parser g=f a in g s)
+
+runParser :: Parser a -> String -> Maybe a
+runParser (Parser x) = fmap fst . x
