@@ -29,12 +29,7 @@ parseErrorIf True  = parseError
 parseErrorIf False = return ()
 
 parseOK :: Parser a -> Parser Bool
-parseOK p = parseOr
-    [ do
-        p
-        return True
-    , return False
-    ]
+parseOK p = parseOr [parseValue p True, return False]
 
 parseOr :: [Parser a] -> Parser a
 parseOr x = Parser $ parseOr' x
@@ -79,9 +74,7 @@ parseNext = Parser parseNext'
 parseExpect :: (Char -> Bool) -> Parser Char
 parseExpect f = do
     v <- parsePeak
-    if f v
-        then parseValue parseNext v
-        else parseError
+    if f v then parseValue parseNext v else parseError
 
 parseValue :: Parser a -> b -> Parser b
 parseValue p x = do
