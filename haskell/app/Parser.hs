@@ -11,7 +11,7 @@ instance Applicative Parser where
     pure x = Parser (\s->Just (x,s))
 
     Parser x  <*> Parser y       = Parser $ \s->case x s of
-        Just (f,s)->fmap (B.first f) (y s)
+        Just (f,s)->(fmap (B.first f) . y) s
         Nothing->Nothing
 
 instance Monad Parser where
