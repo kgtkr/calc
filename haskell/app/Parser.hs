@@ -26,7 +26,7 @@ runParser :: Parser a -> String -> Maybe a
 runParser (Parser x) = fmap fst . x
 
 parseError :: Parser a
-parseError = Parser $ \_ -> Nothing
+parseError = Parser $ const Nothing
 
 parseErrorIf :: Bool -> Parser ()
 parseErrorIf True  = parseError
