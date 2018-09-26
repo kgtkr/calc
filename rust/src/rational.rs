@@ -1,5 +1,5 @@
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 use std::fmt;
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Sub, SubAssign};
 
 fn gcd(a: i64, b: i64) -> i64 {
   if b == 0 {
@@ -20,8 +20,7 @@ impl Rational {
     if d == 0 {
       Rational::NaN
     } else {
-      let g = gcd(n.abs(), d.abs());
-      let g = if d < 0 { -g } else { g };
+      let g = d.signum() * gcd(n.abs(), d.abs());
       Rational::Value { n: n / g, d: d / g }
     }
   }
