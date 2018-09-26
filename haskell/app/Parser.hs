@@ -84,6 +84,11 @@ parseExpect f = do
             return v
         else parseError
 
+parseValue :: Parser a -> b -> Parser b
+parseValue p x = do
+    p
+    return x
+
 parseChar :: Char -> Parser Char
 parseChar c = parseExpect (== c)
 
