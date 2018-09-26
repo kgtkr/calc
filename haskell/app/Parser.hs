@@ -80,9 +80,7 @@ parseExpect :: (Char -> Bool) -> Parser Char
 parseExpect f = do
     v <- parsePeak
     if f v
-        then do
-            parseNext
-            return v
+        then parseValue parseNext v
         else parseError
 
 parseValue :: Parser a -> b -> Parser b
