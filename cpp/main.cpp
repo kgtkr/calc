@@ -14,6 +14,15 @@ int gcd(int a, int b)
 	}
 }
 
+int sign(int x)
+{
+	if (x > 0)
+		return 1;
+	if (x < 0)
+		return -1;
+	return 0;
+}
+
 struct ParseError
 {
 };
@@ -32,8 +41,7 @@ struct Rational
 		}
 		else
 		{
-			auto g = gcd(std::abs(n), std::abs(d));
-			g = d < 0 ? -g : g;
+			auto g = sign(d) * gcd(std::abs(n), std::abs(d));
 			this->n = n / g;
 			this->d = d / g;
 			this->is_nan = false;
