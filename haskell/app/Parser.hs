@@ -17,3 +17,11 @@ instance Monad Parser where
 
 runParser :: Parser a -> String -> Maybe a
 runParser (Parser x) = fmap fst . x
+
+parseOr :: Parser a -> Parser a -> Parser a
+parseOr (Parser a) (Parser b) =
+    Parser
+        $ (\s -> case a s of
+              Just x  -> Just x
+              Nothing -> b s
+          )
