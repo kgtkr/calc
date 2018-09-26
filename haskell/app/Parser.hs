@@ -18,6 +18,9 @@ instance Monad Parser where
 runParser :: Parser a -> String -> Maybe a
 runParser (Parser x) = fmap fst . x
 
+parseError :: Parser a
+parseError = Parser $ \_ -> Nothing
+
 parseOr :: Parser a -> Parser a -> Parser a
 parseOr (Parser a) (Parser b) = Parser parseOr'
   where
@@ -25,9 +28,24 @@ parseOr (Parser a) (Parser b) = Parser parseOr'
         Just x  -> Just x
         Nothing -> b s
 
-
 parsePeak :: Parser Char
 parsePeak = Parser parsePeak'
   where
     parsePeak' []        = Nothing
     parsePeak' s@(x : _) = Just (x, s)
+
+parseNext :: Parser Char
+parseNext = Parser parseNext'
+  where
+    parseNext' []       = Nothing
+    parseNext' (x : xs) = Just (x, xs)
+
+
+parseExpect :: (Char -> Bool) -> Parser Char
+parseExpect f = do
+    v <- parsePeak
+    if f v
+        then do
+            parseNext
+            return v
+        else parseError
