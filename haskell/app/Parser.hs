@@ -8,7 +8,7 @@ import           Safe
 data Parser a = Parser (String -> Maybe (a,String))
 
 instance Functor Parser where
-    fmap f (Parser x) = Parser $ \s->(fmap (B.first f) . x) s
+    fmap f (Parser x) = Parser $ fmap (B.first f) . x
 
 instance Applicative Parser where
     pure x = Parser $ \s->Just (x,s)
