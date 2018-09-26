@@ -49,3 +49,6 @@ parseExpect f = do
             parseNext
             return v
         else parseError
+
+parseChar :: Char -> Parser Char
+parseChar c = parseExpect (== c)
