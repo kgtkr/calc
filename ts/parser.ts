@@ -13,13 +13,13 @@ export class Parser {
     }
 
     next() {
-        let v = this.peek();
+        const v = this.peek();
         this.pos++;
         return v;
     }
 
     expect(f: (x: string) => boolean) {
-        let v = this.peek();
+        const v = this.peek();
         if (f(v)) {
             this.next();
             return v;
@@ -78,7 +78,7 @@ export class Parser {
             return this.number();
         }
 
-        let v = this.expr();
+        const v = this.expr();
         this.char(")");
         return v;
     }
@@ -128,7 +128,7 @@ export class Parser {
     }
 
     parse() {
-        let v = this.expr();
+        const v = this.expr();
         this.eof();
         return v;
     }
