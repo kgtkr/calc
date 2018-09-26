@@ -93,3 +93,9 @@ parseNumber = do
         _           -> return ()
     n <- (parseUnTry . return . readMay) ns
     return $ ratio (n * g) 1
+
+parseEof :: Parser ()
+parseEof = Parser parseEof'
+  where
+    parseEof' [] = Just ((), [])
+    parseEof' _  = Nothing
