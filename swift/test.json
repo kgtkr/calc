@@ -1,0 +1,12 @@
+{
+  "builds": [
+    [
+      "swift",
+      "build"
+    ]
+  ],
+  "run": [
+    "./.build/x86_64-unknown-linux/debug/swift",
+    "$ARGS"
+  ]
+}
