@@ -8,6 +8,7 @@
 * Elixir
 * Scheme
 * Haskell
+* Swift
 
 ## 実装してない(やったことある)
 * Java
@@ -26,7 +27,6 @@
 * Crystal
 * Nim
 * Julia
-* Swift
 * Common Lisp
 * Clojure
 * Hack
