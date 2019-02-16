@@ -1,0 +1,2 @@
+#!/bin/sh
+./.build/x86_64-unknown-linux/debug/swift "$1"
