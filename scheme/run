@@ -1,0 +1,2 @@
+#!/bin/sh
+gosh main.scm "$1"
