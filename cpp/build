@@ -1,4 +1,0 @@
-#!/bin/sh
-rm -rf dist
-mkdir dist
-g++ main.cpp -o dist/calc
