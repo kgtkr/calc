@@ -7,7 +7,7 @@ import sys
 testCases = json.load(open("test.json"))
 
 
-for lang in [x for x in os.listdir(".") if os.path.exists(f"{x}/test.json")]:
+for lang in [x for x in os.listdir(".") if os.path.exists(f"{x}/Dockerfile")]:
     if len(sys.argv) == 1 or sys.argv[1] == lang:
         image_name = "calc_"+lang
         print(f"#{lang}")
