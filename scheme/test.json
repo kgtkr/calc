@@ -1,8 +1,0 @@
-{
-  "builds": [],
-  "run": [
-    "gosh",
-    "main.scm",
-    "$ARGS"
-  ]
-}
