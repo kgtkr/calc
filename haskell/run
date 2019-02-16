@@ -1,2 +1,2 @@
 #!/bin/sh
-stack exec haskell-exe -- $1
+stack exec haskell-exe -- "$1"
