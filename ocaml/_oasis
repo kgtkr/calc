@@ -1,0 +1,15 @@
+Name: calc
+Version: 0.1
+Synopsis: calc
+Authors: kgtkr
+License: AGPL
+
+Description: calc
+Homepage: https://github.com/kgtkr/calc
+
+OASISFormat: 0.4
+BuildTools: ocamlbuild
+Plugins: META (0.4), DevFiles (0.4)
+Executable "main"
+  Path: src
+  MainIs: main.ml
